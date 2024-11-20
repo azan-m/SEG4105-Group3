@@ -58,6 +58,8 @@ function SearchResults() {
       sortedResults.sort((a, b) => a.title.localeCompare(b.title));
     } else if (option === 'rating') {
       sortedResults.sort((a, b) => b.rating - a.rating);
+    } else if (option === 'date') {
+      sortedResults.sort((a, b) => b.releaseYear - a.releaseYear);
     }
 
     setResults(sortedResults);
@@ -94,6 +96,7 @@ function SearchResults() {
         </option>
         <option value="alphabetical">Sort by Alphabetical Order</option>
         <option value="rating">Sort by Rating</option>
+        <option value="date">Sort by Release Date</option>
       </select>
 
       {error ? (
