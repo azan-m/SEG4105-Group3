@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import getMovieDetails from '../services/MovieDetail'; // A function to fetch movie details by ID
 import '../styles/MovieDetails.css'; // Assuming you create a separate CSS file for the styling
+import '../styles/img.jpg';
 
 function MovieDetails() {
   const { id } = useParams(); // Get the movie id from the URL
   const [movie, setMovie] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -16,12 +18,25 @@ function MovieDetails() {
     fetchMovieDetails();
   }, [id]);
 
+  const handleHome = () => {
+    navigate('/');
+  };
+
+  const handleBackToResults = () => {
+    navigate(-1); // Go back to the previous page
+  };
+
   if (!movie) {
     return <p>Loading...</p>;
   }
 
   return (
+    
     <div className="movie-details">
+      <div className="button-container">
+        <button className="back-button" onClick={handleBackToResults}>Back to Results</button>
+        <button className="home-button" onClick={handleHome}>Home</button>
+      </div>
       <h1 className="movie-title">{movie.title}</h1>
       <img src={movie.imageSet?.verticalPoster?.w600} alt={movie.title} className="movie-poster"/>
       <p className="movie-overview"><strong>Overview:</strong> {movie.overview}</p>

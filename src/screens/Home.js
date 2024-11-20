@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import searchByTitle from '../services/MovieService';
 import searchByGenre from '../services/SearchGenreService'; // Import the genre search service
 import Card from '../components/Card';
+import '../styles/styles.css'; // Import the CSS file
+import '../styles/img.jpg';
 
 function Home() {
   const navigate = useNavigate();
@@ -39,8 +41,13 @@ function Home() {
     }
   };
 
+  const handleHome = () => {
+    navigate('/');
+  };
+
   return (
-    <div>
+    <div className="container">
+      <div className="banner">Movie Search</div>
       <form onSubmit={handleSearch}>
         <input
           type="text"
@@ -64,6 +71,7 @@ function Home() {
           />
         )}
         <button type="submit">Search</button>
+        <button type="button" className="home-button" onClick={handleHome}>Home</button>
       </form>
 
       {error ? (
@@ -72,9 +80,9 @@ function Home() {
           <button onClick={fetchMovies}>Retry</button>
         </div>
       ) : (
-        <div className="results-list">
-          {results.length > 0 ? (
-            results.map((result, index) => (
+        results.length > 0 && (
+          <div className="results-list">
+            {results.map((result, index) => (
               <Card
                 key={index}
                 id={result.id}
@@ -84,11 +92,9 @@ function Home() {
                 releaseYear={result.releaseYear}
                 rating={result.rating}
               />
-            ))
-          ) : (
-            <p>No results found.</p>
-          )}
-        </div>
+            ))}
+          </div>
+        )
       )}
     </div>
   );

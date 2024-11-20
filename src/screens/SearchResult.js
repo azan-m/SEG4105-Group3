@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import searchByTitle from '../services/MovieService';
 import searchByGenre from '../services/SearchGenreService'; // Import the genre search service
 import Card from '../components/Card';
+import '../styles/styles.css'; // Import the CSS file
+import backgroundImage from '../styles/img.jpg'; // Import the background image
 
 function SearchResults() {
   const location = useLocation();
@@ -47,8 +49,13 @@ function SearchResults() {
     }
   };
 
+  const handleHome = () => {
+    navigate('/');
+  };
+
   return (
-    <div>
+    <div className="container">
+      <div className="banner">Movie Search</div>
       <form onSubmit={handleSearch}>
         <input
           type="text"
@@ -57,6 +64,7 @@ function SearchResults() {
           onChange={(e) => setNewQuery(e.target.value)}
         />
         <button type="submit">Search</button>
+        <button type="button" className="home-button" onClick={handleHome}>Home</button>
       </form>
 
       <h2>Results for "{query || genres}"</h2>

@@ -1,0 +1,123 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('../styles/img.jpg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  body::before {
+    content: '';
+    position: fixed; /* Ensure it stays during scrolling */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Shadow overlay */
+    z-index: 1;
+  }
+  
+  .container {
+    max-width: 1200px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    padding: 20px; /* Add padding to prevent content from being cut off */
+    margin: 0 auto; /* Center the container horizontally */
+  }
+  
+  .banner {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.7); /* Adjusted to match the background image better */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+  }
+  
+  input[type="text"], select {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .results-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px; /* Add margin to prevent the first result from being cut off */
+  }
+  
+  .card {
+    background-color: rgba(255, 255, 255, 0.1); /* Make the card background slightly transparent */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    width: 300px; /* Make the cards wider */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #fff; /* Change text color to white */
+  }
+  
+  .card img {
+    width: 100%;
+    border-radius: 4px;
+    z-index: 3; /* Ensure the image is above the overlay */
+    position: relative;
+  }
+  
+  .card h3 {
+    margin: 10px 0;
+    color: #fff; /* Change text color to white */
+  }
+  
+  .card p {
+    color: #fff; /* Change text color to white */
+  }
+  
+  .home-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .home-button:hover {
+    background-color: #218838;
+  }
+  
+  h2 {
+    color: #fff; /* Change search results text color to white */
+  }
