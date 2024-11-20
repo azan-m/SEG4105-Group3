@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import searchByTitle from '../services/MovieService';
 import searchByGenre from '../services/SearchGenreService'; // Import the genre search service
 import Card from '../components/Card';
 
 function SearchResults() {
   const location = useLocation();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get('search'); // Search query
   const searchType = searchParams.get('type'); // Get the search type (title or genre)
   const genres = searchParams.get('genres'); // For genre search
   const [results, setResults] = useState([]);
   const [sortOption, setSortOption] = useState(''); // Default to no sorting
+  const [newQuery, setNewQuery] = useState(query || ''); // State for new search query
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -33,6 +35,13 @@ function SearchResults() {
     fetchMovies();
   }, [query, searchType, genres]);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (newQuery.trim()) {
+      navigate(`/results?search=${newQuery}&type=title`);
+    }
+  };
+
   // Sorting logic
   const sortedResults = [...results];
   if (sortOption === 'alphabetical') {
@@ -43,6 +52,16 @@ function SearchResults() {
 
   return (
     <div>
+      <form onSubmit={handleSearch}>
+        <input
+          type="text"
+          placeholder="Search for a movie..."
+          value={newQuery}
+          onChange={(e) => setNewQuery(e.target.value)}
+        />
+        <button type="submit">Search</button>
+      </form>
+
       <h2>Results for "{query || genres}"</h2>
 
       {/* Dropdown for sorting */}
