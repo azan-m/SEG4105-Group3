@@ -49,6 +49,20 @@ function SearchResults() {
     }
   };
 
+  const handleSort = (e) => {
+    const option = e.target.value;
+    setSortOption(option);
+
+    let sortedResults = [...results];
+    if (option === 'alphabetical') {
+      sortedResults.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (option === 'rating') {
+      sortedResults.sort((a, b) => b.rating - a.rating);
+    }
+
+    setResults(sortedResults);
+  };
+
   const handleHome = () => {
     navigate('/');
   };
@@ -72,7 +86,7 @@ function SearchResults() {
       {/* Dropdown for sorting */}
       <select
         value={sortOption}
-        onChange={(e) => setSortOption(e.target.value)}
+        onChange={handleSort}
         style={{ marginBottom: '1rem' }}
       >
         <option value="" disabled>
