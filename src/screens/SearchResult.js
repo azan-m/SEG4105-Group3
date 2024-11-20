@@ -14,11 +14,13 @@ function SearchResults() {
   const [results, setResults] = useState([]);
   const [sortOption, setSortOption] = useState(''); // Default to no sorting
   const [newQuery, setNewQuery] = useState(query || ''); // State for new search query
+  const [error, setError] = useState(null); // State for error handling
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      let data = null;
+  const fetchMovies = async () => {
+    setError(null); // Reset error state
+    let data = null;
 
+    try {
       // Check the search type and call the appropriate service
       if (searchType === 'title' && query) {
         data = await searchByTitle(query);
@@ -28,10 +30,13 @@ function SearchResults() {
 
       if (data) {
         setResults(Array.isArray(data) ? data : [data]); // Ensure it's an array
-        console.log(data);
       }
-    };
+    } catch (err) {
+      setError('Failed to fetch results. Please try again.');
+    }
+  };
 
+  useEffect(() => {
     fetchMovies();
   }, [query, searchType, genres]);
 
@@ -41,14 +46,6 @@ function SearchResults() {
       navigate(`/results?search=${newQuery}&type=title`);
     }
   };
-
-  // Sorting logic
-  const sortedResults = [...results];
-  if (sortOption === 'alphabetical') {
-    sortedResults.sort((a, b) => a.title.localeCompare(b.title));
-  } else if (sortOption === 'rating') {
-    sortedResults.sort((a, b) => b.rating - a.rating);
-  }
 
   return (
     <div>
@@ -77,23 +74,30 @@ function SearchResults() {
         <option value="rating">Sort by Rating</option>
       </select>
 
-      <div className="results-list">
-        {sortedResults.length > 0 ? (
-          sortedResults.map((result, index) => (
-            <Card
-              key={index}
-              id={result.id}
-              title={result.title}
-              image={result.imageSet?.verticalPoster?.w240}
-              overview={result.overview}
-              releaseYear={result.releaseYear}
-              rating={result.rating}
-            />
-          ))
-        ) : (
-          <p>No results found.</p>
-        )}
-      </div>
+      {error ? (
+        <div>
+          <p>{error}</p>
+          <button onClick={fetchMovies}>Retry</button>
+        </div>
+      ) : (
+        <div className="results-list">
+          {results.length > 0 ? (
+            results.map((result, index) => (
+              <Card
+                key={index}
+                id={result.id}
+                title={result.title}
+                image={result.imageSet?.verticalPoster?.w240}
+                overview={result.overview}
+                releaseYear={result.releaseYear}
+                rating={result.rating}
+              />
+            ))
+          ) : (
+            <p>No results found.</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
