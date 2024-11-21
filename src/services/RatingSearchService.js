@@ -7,7 +7,6 @@ const fetchShowsByRating = async (ratingMin, ratingMax, keyWordTitle) => {
     url: 'https://streaming-availability.p.rapidapi.com/shows/search/filters',
     params: {
         country: 'ca',
-        series_granularity: 'show',
         order_direction: 'asc',
         order_by: 'original_title',
         keyword: keyWordTitle,

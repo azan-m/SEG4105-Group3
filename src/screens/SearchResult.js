@@ -28,11 +28,15 @@ function SearchResults() {
         data = await searchByTitle(query);
       } else if (searchType === 'genre' && genres) {
         data = await searchByGenre(genres);
+        console.log(data)
       } else if (searchType === 'rating' && minRating && maxRating) {
         data = await fetchShowsByRating(parseInt(minRating), parseInt(maxRating));
+        data = data.shows
+        // console.log()
       }
 
       if (data) {
+        console.log("Setting Results")
         setResults(Array.isArray(data) ? data : [data]); // Ensure it's an array
       }
     } catch (err) {

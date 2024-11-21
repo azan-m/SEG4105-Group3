@@ -98,7 +98,7 @@ function Home() {
               value={ratingMin}
               onChange={(e) => setRatingMin(e.target.value)}
               min="0"
-              max="10"
+              max="100"
             />
             <input
               type="number"
@@ -106,7 +106,7 @@ function Home() {
               value={ratingMax}
               onChange={(e) => setRatingMax(e.target.value)}
               min="0"
-              max="10"
+              max="100"
             />
           </div>
         )}
