@@ -1,101 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import searchByTitle from '../services/MovieService';
-import searchByGenre from '../services/SearchGenreService'; // Import the genre search service
-import Card from '../components/Card';
-import '../styles/styles.css'; // Import the CSS file
-import '../styles/img.jpg';
+import getGenres from '../services/GetGenreService'; // Service for fetching genres
+import '../styles/styles.css'; // Import CSS file
 
 function Home() {
   const navigate = useNavigate();
-  const [query, setQuery] = useState(''); // State for search query
-  const [searchType, setSearchType] = useState('title'); // State for search type (title or genre)
-  const [genres, setGenres] = useState(''); // State for genre search
-  const [results, setResults] = useState([]);
+  const [searchType, setSearchType] = useState(''); // State for search type
+  const [genres, setGenres] = useState([]); // State for list of genres
+  const [selectedGenre, setSelectedGenre] = useState(''); // Selected genre
+  const [query, setQuery] = useState(''); // Search query for title
+  const [ratingMin, setRatingMin] = useState(''); // Minimum rating
+  const [ratingMax, setRatingMax] = useState(''); // Maximum rating
   const [error, setError] = useState(null); // State for error handling
 
-  const fetchMovies = async () => {
-    setError(null); // Reset error state
-    let data = null;
-
-    try {
-      // Check the search type and call the appropriate service
-      if (searchType === 'title' && query) {
-        data = await searchByTitle(query);
-      } else if (searchType === 'genre' && genres) {
-        data = await searchByGenre(genres);
+  // Fetch genres when 'searchType' is set to 'genre'
+  useEffect(() => {
+    const fetchGenres = async () => {
+      if (searchType === 'genre') {
+        try {
+          const genreList = await getGenres();
+          if (genreList) {
+            setGenres(genreList); // Populate the genre dropdown
+          }
+        } catch (err) {
+          setError('Failed to fetch genres. Please try again.');
+        }
       }
+    };
 
-      if (data) {
-        setResults(Array.isArray(data) ? data : [data]); // Ensure it's an array
-      }
-    } catch (err) {
-      setError('Failed to fetch results. Please try again.');
-    }
-  };
+    fetchGenres();
+  }, [searchType]);
 
+  // Handle search submission
   const handleSearch = (e) => {
     e.preventDefault();
-    if (query.trim()) {
-      navigate(`/results?search=${query}&type=${searchType}`);
-    }
-  };
+    setError(null); // Reset error state
 
-  const handleHome = () => {
-    navigate('/');
+    if (searchType === 'title' && query.trim()) {
+      navigate(`/results?search=${query}&type=title`);
+    } else if (searchType === 'genre' && selectedGenre) {
+      navigate(`/results?genres=${selectedGenre}&type=genre`);
+    } else if (searchType === 'rating' && ratingMin && ratingMax) {
+      navigate(`/results?minRating=${ratingMin}&maxRating=${ratingMax}&type=rating`);
+    } else {
+      setError('Please provide valid inputs for your search.');
+    }
   };
 
   return (
     <div className="container">
       <div className="banner">Movie Search</div>
       <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Search for a movie..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+        {/* Dropdown for selecting search type */}
         <select
           value={searchType}
           onChange={(e) => setSearchType(e.target.value)}
         >
+          <option value="">Select Search Type</option>
           <option value="title">Title</option>
           <option value="genre">Genre</option>
+          <option value="rating">Rating</option>
         </select>
-        {searchType === 'genre' && (
-          <input
-            type="text"
-            placeholder="Enter genres..."
-            value={genres}
-            onChange={(e) => setGenres(e.target.value)}
-          />
+
+        {/* Input for Title Search */}
+        {searchType === 'title' && (
+          <div>
+            <input
+              type="text"
+              placeholder="Search by title..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
         )}
+
+        {/* Dropdown for Genre Search */}
+        {searchType === 'genre' && (
+          <div>
+            <select
+              value={selectedGenre}
+              onChange={(e) => setSelectedGenre(e.target.value)}
+            >
+              <option value="">Select Genre</option>
+              {genres.map((genre) => (
+                <option key={genre.id} value={genre.id}>
+                  {genre.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Input for Rating Search */}
+        {searchType === 'rating' && (
+          <div>
+            <input
+              type="number"
+              placeholder="Min Rating"
+              value={ratingMin}
+              onChange={(e) => setRatingMin(e.target.value)}
+              min="0"
+              max="100"
+            />
+            <input
+              type="number"
+              placeholder="Max Rating"
+              value={ratingMax}
+              onChange={(e) => setRatingMax(e.target.value)}
+              min="0"
+              max="100"
+            />
+          </div>
+        )}
+
         <button type="submit">Search</button>
-        <button type="button" className="home-button" onClick={handleHome}>Home</button>
       </form>
 
-      {error ? (
-        <div>
-          <p>{error}</p>
-          <button onClick={fetchMovies}>Retry</button>
-        </div>
-      ) : (
-        results.length > 0 && (
-          <div className="results-list">
-            {results.map((result, index) => (
-              <Card
-                key={index}
-                id={result.id}
-                title={result.title}
-                image={result.imageSet?.verticalPoster?.w240}
-                overview={result.overview}
-                releaseYear={result.releaseYear}
-                rating={result.rating}
-              />
-            ))}
-          </div>
-        )
-      )}
+      {error && <p>{error}</p>}
     </div>
   );
 }

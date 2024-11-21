@@ -15,6 +15,8 @@ const getGenres = async () => {
 
     try {
         const response = await axios.request(options);
+        console.log("Genres")
+        console.log(response.data)
         return response.data;
     } catch (error) {
         console.error('Error fetching List of genres:', error);
