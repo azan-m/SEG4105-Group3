@@ -90,7 +90,7 @@ function SearchResults() {
 
       {/* Dropdown for sorting */}
       <div style={{ marginBottom: '1rem', marginTop: '20px' }}>
-        <label htmlFor="sort" style={{ marginRight: '10px', color: 'white' }}>Sort By:</label>
+        {/* <label htmlFor="sort" style={{ marginRight: '10px', color: 'white' }}>Sort By:</label> */}
         <select id="sort" value={sortOption} onChange={handleSort}>
           <option value="" disabled>
             Select sorting option
