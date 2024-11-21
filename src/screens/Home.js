@@ -64,14 +64,12 @@ function Home() {
 
         {/* Input for Title Search */}
         {searchType === 'title' && (
-          <div>
-            <input
-              type="text"
-              placeholder="Search by title..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Enter movie title..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
         )}
 
         {/* Dropdown for Genre Search */}
@@ -100,7 +98,7 @@ function Home() {
               value={ratingMin}
               onChange={(e) => setRatingMin(e.target.value)}
               min="0"
-              max="100"
+              max="10"
             />
             <input
               type="number"
@@ -108,7 +106,7 @@ function Home() {
               value={ratingMax}
               onChange={(e) => setRatingMax(e.target.value)}
               min="0"
-              max="100"
+              max="10"
             />
           </div>
         )}
@@ -116,7 +114,7 @@ function Home() {
         <button type="submit">Search</button>
       </form>
 
-      {error && <p>{error}</p>}
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }

@@ -83,4 +83,11 @@
 .back-button:hover, .home-button:hover {
   background-color: #0056b3;
 }
-  
+
+.error-message {
+  color: #fff; /* Change text color to white */
+  background-color: rgba(255, 0, 0, 0.7); /* Optional: Add a background color for better visibility */
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
