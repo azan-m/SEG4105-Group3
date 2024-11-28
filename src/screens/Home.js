@@ -55,16 +55,18 @@ function Home() {
     <div className="container">
       <div className="banner">Movie Search</div>
       <form onSubmit={handleSearch}>
-        {/* Dropdown for selecting search type */}
-        <select
-          value={searchType}
-          onChange={(e) => setSearchType(e.target.value)}
-        >
-          <option value="">Select Search Type</option>
-          <option value="title">Title</option>
-          <option value="genre">Genre</option>
-          <option value="rating">Rating</option>
-        </select>
+        <div className="select-container">
+          {/* Dropdown for selecting search type */}
+          <select
+            value={searchType}
+            onChange={(e) => setSearchType(e.target.value)}
+          >
+            <option value="">Select Search Type</option>
+            <option value="title">Title</option>
+            <option value="genre">Genre</option>
+            <option value="rating">Rating</option>
+          </select>
+        </div>
 
         {/* Input for Title Search */}
         {searchType === 'title' && (
@@ -78,8 +80,9 @@ function Home() {
 
         {/* Dropdown for Genre Search */}
         {searchType === 'genre' && (
-          <div>
+          <div className="select-container">
             <select
+              className="genre-select"
               value={selectedGenre}
               onChange={(e) => setSelectedGenre(e.target.value)}
             >
@@ -102,7 +105,7 @@ function Home() {
               value={ratingMin}
               onChange={(e) => setRatingMin(e.target.value)}
               min="0"
-              max="100"
+              max="10"
             />
             <input
               type="number"
@@ -110,7 +113,7 @@ function Home() {
               value={ratingMax}
               onChange={(e) => setRatingMax(e.target.value)}
               min="0"
-              max="100"
+              max="10"
             />
           </div>
         )}
