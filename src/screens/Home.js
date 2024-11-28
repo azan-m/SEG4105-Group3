@@ -41,7 +41,11 @@ function Home() {
     } else if (searchType === 'genre' && selectedGenre) {
       navigate(`/results?genres=${selectedGenre}&type=genre`);
     } else if (searchType === 'rating' && ratingMin && ratingMax) {
-      navigate(`/results?minRating=${ratingMin}&maxRating=${ratingMax}&type=rating`);
+      if (parseInt(ratingMax) < parseInt(ratingMin)) {
+        setError('Maximum rating cannot be lower than minimum rating.');
+      } else {
+        navigate(`/results?minRating=${ratingMin}&maxRating=${ratingMax}&type=rating`);
+      }
     } else {
       setError('Please provide valid inputs for your search.');
     }
